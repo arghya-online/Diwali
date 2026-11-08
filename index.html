@@ -10,6 +10,11 @@
 <meta property="og:description" content="Open for fireworks, Banaras ghats and a Diwali wish.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪔</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@600;800&display=swap" rel="stylesheet">
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <style>
 :root{--gold:#ffd57a;--bg:#070418;color-scheme:dark}
 *{box-sizing:border-box}
@@ -230,10 +235,12 @@ function show(from,to){
 function link(from,to){const u=new URL(location.origin+location.pathname);u.searchParams.set('from',from);if(to)u.searchParams.set('to',to);return u.toString()}
 $('form').addEventListener('submit',e=>{e.preventDefault();
  const from=clean($('from').value),to=clean($('to').value);if(!from)return;
- history.replaceState(null,'',link(from,to));show(from,to)});
+ history.replaceState(null,'',link(from,to));show(from,to);
+ if(window.va)window.va('event',{name:'wish_created'});});
 $('again').onclick=()=>{history.replaceState(null,'',location.pathname);$('wish').classList.add('hide');$('bar').classList.add('hide');$('intro').classList.remove('hide');const hint=$('hint');if(hint)hint.style.opacity='';document.title='শুভ দীপাবলি 🪔 Diwali Wish';$('from').focus()};
 function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,2200)}
 $('share').onclick=async()=>{const u=location.href,d={title:'শুভ দীপাবলি 🪔',text:'শুভ দীপাবলি! A Diwali wish for you 🪔✨',url:u};
+ if(window.va)window.va('event',{name:'wish_shared'});
  try{if(navigator.share){await navigator.share(d);return}await navigator.clipboard.writeText(u);toast('Link copied! 🪔')}
  catch(e){if(e.name!=='AbortError')toast(u)}};
 const q=new URLSearchParams(location.search),qf=clean(q.get('from'));
